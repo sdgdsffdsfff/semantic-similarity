@@ -30,14 +30,14 @@ import zx.soft.similarity.util.TraverseEvent;
  * 即： &lt;概念&gt; &lt;空格或者跳格&gt; &lt;词性&gt; &lt;空格或者跳格&gt; &lt;定义&gt;"
  * <br/>
  * 概念保存到数组中，没有保存到Map中，可以降低对内存空间的使用
- * 
+ *
  */
 public class ConceptDictTraverseEvent implements TraverseEvent<String> {
 
 	private List<Concept> conceptList = null;
 
 	public ConceptDictTraverseEvent() {
-		conceptList = new ArrayList<Concept>();
+		conceptList = new ArrayList<>();
 	}
 
 	public Concept[] getConcepts() {
@@ -63,7 +63,7 @@ public class ConceptDictTraverseEvent implements TraverseEvent<String> {
 
 		int lastPosition = 0; //最近一次处理内容的有意义的开始位置
 		int processFlag = 0; //当前处理部分的标志 0：处理word； 1：词性；2：定义
-		//解析出一行中的概念各项数据		
+		//解析出一行中的概念各项数据
 		loop: for (int position = 0; position < line.length(); position++) {
 			ch = line.charAt(position);
 
@@ -104,8 +104,7 @@ public class ConceptDictTraverseEvent implements TraverseEvent<String> {
 	}
 
 	public void saveToXML(File xmlFile) throws Exception {
-		String conceptFile = getClass().getPackage().getName().replaceAll("\\.", "/") + "/concept.dat";
-		InputStream input = this.getClass().getClassLoader().getResourceAsStream(conceptFile);
+		InputStream input = this.getClass().getClassLoader().getResourceAsStream("data/concept.dat");
 		BufferedReader in = new BufferedReader(new InputStreamReader(input, "utf8"));
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -149,7 +148,7 @@ public class ConceptDictTraverseEvent implements TraverseEvent<String> {
 
 		int lastPosition = 0; //最近一次处理内容的有意义的开始位置
 		int processFlag = 0; //当前处理部分的标志 0：处理word； 1：词性；2：定义
-		//解析出一行中的概念各项数据		
+		//解析出一行中的概念各项数据
 		loop: for (int position = 0; position < line.length(); position++) {
 			ch = line.charAt(position);
 

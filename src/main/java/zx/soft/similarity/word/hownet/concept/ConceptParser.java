@@ -23,7 +23,7 @@ import zx.soft.similarity.word.hownet.sememe.SememeParser;
  * <ol>
  * 	<li>两个义原集合的运算方式支持均值方式或Fuzzy方式</li>
  * </ol>
- * 
+ *
  * @see zx.soft.similarity.Similaritable
  * @deprecated
  */
@@ -31,7 +31,7 @@ import zx.soft.similarity.word.hownet.sememe.SememeParser;
 public abstract class ConceptParser implements HownetMeta, Similaritable {
 
 	/** the logger */
-	protected Logger LOG = LoggerFactory.getLogger(this.getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/** 所有概念存放的数组 */
 	private static Concept[] CONCEPTS = null;
@@ -50,8 +50,7 @@ public abstract class ConceptParser implements HownetMeta, Similaritable {
 		this.sememeParser = sememeParser;
 		synchronized (this) {
 			if (CONCEPTS == null) {
-				String conceptFile = getClass().getPackage().getName().replaceAll("\\.", "/") + "/concept.dat";
-				InputStream input = this.getClass().getClassLoader().getResourceAsStream(conceptFile);
+				InputStream input = this.getClass().getClassLoader().getResourceAsStream("data/concept.dat");
 				load(input, "UTF-8");
 			}
 		}
@@ -59,12 +58,12 @@ public abstract class ConceptParser implements HownetMeta, Similaritable {
 
 	/**
 	 * 从文件中加载概念知识，并自定进行排序
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public void load(InputStream input, String encoding) throws IOException {
 		ConceptDictTraverseEvent event = new ConceptDictTraverseEvent();
-		LOG.info("loading conecpt dictionary...");
+		logger.info("loading conecpt dictionary...");
 		long time = System.currentTimeMillis();
 
 		FileUtils.traverseLines(input, encoding, event);
@@ -72,12 +71,12 @@ public abstract class ConceptParser implements HownetMeta, Similaritable {
 		System.out.println("共有概念数量:" + CONCEPTS.length);
 
 		time = System.currentTimeMillis() - time;
-		LOG.info("loading concept dictionary completely. time elapsed: " + time);
+		logger.info("loading concept dictionary completely. time elapsed: " + time);
 	}
 
 	/**
 	 * 获取两个词语的相似度，如果一个词语对应多个概念，则返回相似度最大的一对
-	 * 
+	 *
 	 * @param word1
 	 * @param word2
 	 * @see ke.commons.similarity.Similariable
@@ -108,7 +107,7 @@ public abstract class ConceptParser implements HownetMeta, Similaritable {
 	/**
 	 * 根据名称获取对应的概念定义信息，由于一个词语可能对应多个概念，因此返回一个数组<br/>
 	 * 查找的过程采用二分查找
-	 * 
+	 *
 	 * @param key 要查找的概念名称
 	 * @return
 	 */
@@ -136,7 +135,7 @@ public abstract class ConceptParser implements HownetMeta, Similaritable {
 					results.add(CONCEPTS[i]);
 				}
 
-				break; // break while
+				break;
 			}
 		}
 
@@ -146,7 +145,7 @@ public abstract class ConceptParser implements HownetMeta, Similaritable {
 	/**
 	 * 获取两个概念之间的相似度，如果两个概念的词性都不相同，则直接返回0;
 	 * 否则，计算对应义元的相似度，并加权求和
-	 * 
+	 *
 	 * @param c1 第一个参与运算的概念
 	 * @param c2 第二个参与运算的概念
 	 * @return
@@ -185,7 +184,7 @@ public abstract class ConceptParser implements HownetMeta, Similaritable {
 	/**
 	 * 计算两个义原集合的相似度，每一个集合都是一个概念的某一类义原集合，如第二基本义原、符号义原、关系义原等，
 	 * 可以采用多种方式计算两个义原集合的相似度，如均值法、Fuzzy运算等
-	 * 
+	 *
 	 * @param set1 义原集合1
 	 * @param set2 义原集合2
 	 * @return
@@ -296,7 +295,7 @@ public abstract class ConceptParser implements HownetMeta, Similaritable {
 	 * @return
 	 */
 	protected double getFuzzySimilarity(String[] sememes1, String[] sememes2) {
-		//TODO 
+		//TODO
 		return 0.0;
 	}
 
